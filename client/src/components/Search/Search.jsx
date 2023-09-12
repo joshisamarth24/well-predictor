@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography, Paper } from '@mui/material';
+import TravelExploreOutlinedIcon from '@mui/icons-material/TravelExploreOutlined';
 import useStyles from './styles';
 
 const Search = ({ onSearch }) => {
@@ -13,10 +14,8 @@ const Search = ({ onSearch }) => {
   };
 
   return (
-    <Paper className={classes.root}>
-      <Typography variant="h6" className={classes.title}>
-        Search Location
-      </Typography>
+    <Paper className={classes.root} >
+
 
       <TextField 
         label="Enter Location" 
@@ -27,24 +26,13 @@ const Search = ({ onSearch }) => {
         onChange={(e) => setLocation(e.target.value)}
       />
 
-      <Button 
-        variant="contained" 
-        color="primary" 
+      <Button  
         className={classes.searchButton}
         onClick={handleSearch}
       >
-        Search
+        <TravelExploreOutlinedIcon/>
       </Button>
 
-      <Button 
-        variant="text" 
-        className={classes.geoButton}
-        onClick={() => {
-          // TODO: Implement Geolocation logic
-        }}
-      >
-        Use My Location
-      </Button>
     </Paper>
   );
 };

@@ -1,21 +1,32 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import React, { useRef, useEffect, useState } from 'react';
-import './index.css';
+import { useNavigate } from "react-router-dom";
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-import geoJson from "./chicago-parks.json";
+import geoJson from "./MapConstant.json";
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import Search from "../Search/Search";
+import "./map.css"
 import wellIcon from "./water-well.png"
+import { Button } from "@mui/material";
+import useStyles from "./styles";
 // import Demo from "./demo.js";
+import locationicon from "./locationicon.png";
 mapboxgl.accessToken = 'pk.eyJ1IjoidHVzaGFyNDUiLCJhIjoiY2xtOWpoZnN1MGtzbDNwbzVnZHU2dzlhcCJ9.ajMoNWOXT4hbizwr9nvxUg';
 
+const markers = [];
+
 const Map=()=> {
+  const Navigate = useNavigate();
+  const classes = useStyles();
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(9);
+  const [lng, setLng] = useState(78.9629);
+  const [lat, setLat] = useState(20.5937);
+  const [zoom, setZoom] = useState(1);
   const [cd,setCD] = useState(null);
+  const [georesult,setGeoResult] = useState(false);
 
 
   // if("geolocation" in navigator){
@@ -106,15 +117,15 @@ const Map=()=> {
     const geocoder=
         new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl
+        mapboxgl: mapboxgl,
          }) ;
-        map.current.addControl(geocoder, "top-right");
         geocoder.on("result", function (e) {
             const cd=e.result.geometry.coordinates;
             setCD(cd);
+            setGeoResult(true);
             console.log(cd);
         })
-
+        map.current.addControl(geocoder);
     // Add navigation control (the +/- zoom buttons)
     map.current.addControl(new mapboxgl.NavigationControl(), "top-right");
     const geolocateControl = new mapboxgl.GeolocateControl({
@@ -127,9 +138,41 @@ const Map=()=> {
       );
       map.current.addControl(geolocateControl);
       geolocateControl.on('geolocate', (e) => {
+        setGeoResult(true);
         const currentCoordinates = [e.coords.longitude, e.coords.latitude];
-        console.log('Current Coordinates:', currentCoordinates); });
+        console.log('Current Coordinates:', currentCoordinates);
+        
+      });
+
     
+      map.current.on('click', (e) => {
+        const clickedCoordinates = e.lngLat;
+        console.log(clickedCoordinates);
+        setGeoResult(true);
+      
+        // Remove existing markers from the map
+        markers.forEach((marker) => marker.remove());
+        markers.length = 0;
+      
+        // Create a marker element with the location icon image
+        const markerElement = document.createElement('div');
+        markerElement.className = 'location-icon'; // Add a class for styling
+        markerElement.style.backgroundImage = `url(${locationicon})`; // Replace with the path to your location icon image
+        markerElement.style.width = '50px'; // Set the width of the icon
+        markerElement.style.height = '50px'; // Set the height of the icon
+      
+        // Create a new marker with the location icon
+        const marker = new mapboxgl.Marker(markerElement)
+          .setLngLat(clickedCoordinates)
+          .addTo(map.current);
+      
+        // Add the marker to the markers array
+        markers.push(marker);
+      
+        // Set the map center to the clicked coordinates
+        map.current.setCenter(clickedCoordinates);
+      });
+        
     // // Clean up on unmount
     // return () => map.current.remove();
 
@@ -140,8 +183,12 @@ const Map=()=> {
             <div className="sidebar">
               Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
             </div>
-          <div ref={mapContainer} className="map-container" />
-          {/* <Demo coordinates={cd} /> */}
+            
+          <div ref={mapContainer} className="map-container" >
+          {(georesult)&&(<div className='button-container'>
+            <Button variant="contained" className='button' onClick={()=>Navigate('/prediction-result')}>Predict</Button>
+            </div>)}
+          </div>
     </div>
   );
 }

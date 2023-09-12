@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
-export default makeStyles({
+export default makeStyles((theme)=>({
     paper: {
         padding: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'center', width: '100px',
       },
@@ -13,4 +13,5 @@ export default makeStyles({
       pointer: {
         cursor: 'pointer',
       },
-});
+        
+}));
