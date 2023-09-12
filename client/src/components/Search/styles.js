@@ -3,23 +3,26 @@ import { makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
-    padding: theme.spacing(3),
+    padding: theme.spacing(2,1),
     marginBottom: theme.spacing(2),
+    width:'50vw',
   },
   title: {
     marginBottom: theme.spacing(2),
   },
   inputField: {
     marginBottom: theme.spacing(2),
+    borderRadius:'30%',
   },
   searchButton: {
-    width: '100%',
+    width: '10%',
     marginBottom: theme.spacing(1),
+    marginLeft:theme.spacing(1),
   },
   geoButton: {
-    width: '100%',
+    width: '10%',
     marginBottom: theme.spacing(1),
   },
 }));
