@@ -1,11 +1,23 @@
 import React from 'react'
 import { Box,styled } from '@mui/material'
 import Slide from './Slide'
+import MidSlide from './MidSlide'
+import MidCarousel from './MidCarousel'
+import WorkItem from './WorkItem'
+import WorkBox from './WorkBox'
+import Footer from './footer'
 const Home = () => {
   return (
-   <Container>
+    <>
+      <Container>
         <Slide />
-   </Container>
+    </Container>
+    <WorkItem />
+    <WorkBox />
+    <MidSlide />
+    <MidCarousel />
+    <Footer />
+    </>
   )
 }
 

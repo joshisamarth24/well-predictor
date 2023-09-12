@@ -23,7 +23,7 @@ const responsive = {
 const Slide = () => {
   return (
     <Component>
-                <Carousel responsive={responsive}
+              <Carousel responsive={responsive}
               containerClass="carousel-container"
               dotListClass="custom-dot-list-style"
               itemClass="carousel-item-padding-40-px"
@@ -32,7 +32,7 @@ const Slide = () => {
               infinite={true}
               autoPlay={true}
               autoPlaySpeed={4000}
-    >
+        >      
       
         <Image src={s1} alt="banner"/>
         <Image src={s2} alt="banner"/>
